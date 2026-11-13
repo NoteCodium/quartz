@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    # Use FREEPDB1 for local PDB users, or FREE if connecting to the root container
+    url: jdbc:oracle:thin:@//localhost:1521/FREEPDB1
+    username: system
+    password: 9111
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+    overwrite-existing-jobs: true
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceId: AUTO
+          jobStore:
+            # Custom delegate binds booleans as "1"/"0" for VARCHAR2(1) with ojdbc11 23+
+            driverDelegateClass: com.example.baremetalschedular.OracleQuartzDelegate
+            isClustered: true
+            clusterCheckinInterval: 10000
+          threadPool:
+            threadCount: 10
